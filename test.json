@@ -1,0 +1,55 @@
+{
+
+    "firstName": "soumma",
+    "lastName": "Barua",
+    "email": "shoumma2011@gmail.com",
+    "password": 12345,
+    "gender": "male",
+    "DOB": "08-20-1997", //mm-dd-yyyy
+
+
+    "lastDonationDate": req.body.lastDonationDate,
+    "lastActiveAt": req.body.lastActiveAt,
+    "lastUpdateAt": req.body.lastUpdateAt,
+    "bloodGroup": "A+",
+
+    "remarks": "ready to donate",
+
+    "division": "6101880d89f76f4f25802891",
+    "district": "6101975389f76f4f258028e1",
+    "upazilla": req.body.upazilla, //not mandatory
+
+    "mobile1": "01794779794",
+    "mobile2": req.body.mobile2, //not mandatory
+
+
+    "NID": 12345678910, //not mandatory
+    "smartCard": req.body.smartCard, //not mandatory
+    "BirthCertificate": req.body.BirthCertificate, //not mandatory
+
+    "currentStatus": true
+
+},
+
+
+
+////-------------------Perfect For Post Request=================
+{
+
+    "firstName": "soumma",
+    "lastName": "Barua",
+    "email": "123@gmail.com",
+    "password": "12345",
+    "gender": "male",
+    "DOB": "08-20-1997",
+    "lastActiveAt": "08-20-1997",
+
+    "bloodGroup": "A+",
+    "remarks": "ready to donate",
+    "division": "6101880d89f76f4f25802891",
+    "district": "6101975389f76f4f258028e1",
+    "mobile1": "0153477979",
+    "NID": "12345678910", //not mandatory
+    "currentStatus": true
+
+}

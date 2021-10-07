@@ -1,0 +1,10 @@
+[
+    { "DivisionCode": 40, "Division": "Khulna" },
+    { "DivisionCode": 20, "Division": "Chittagong" },
+    { "DivisionCode": 10, "Division": "Barisal" },
+    { "DivisionCode": 50, "Division": "Rajshahi" },
+    { "DivisionCode": 30, "Division": "Dhaka" },
+    { "DivisionCode": 55, "Division": "Rangpur" },
+    { "DivisionCode": 60, "Division": "Sylhet" },
+    { "DivisionCode": 65, "Division": "Mymensingh" }
+]
