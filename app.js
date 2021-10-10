@@ -6,6 +6,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const connectDB = require('./database/connection');
+const cors = require('cors');
 
 const app = express();
 const dotenv = require('dotenv');
@@ -13,6 +14,9 @@ dotenv.config({ path: 'config.env' })
 app.set('view engine', 'ejs');
 app.set('views', 'views'); //if default name fof view folder change then need to mention here
 
+app.use(cors({
+  exposedHeaders: ['x-auth-token'],
+}));
 app.use(morgan('tiny')); // this module helps us to log incoming url
 app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(express.json());
