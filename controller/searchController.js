@@ -6,7 +6,6 @@ var { ambulances } = require("../model/ambulance");
 var { cylinders } = require("../model/cylinder");
 const { match } = require("../util/path");
 
-
 /**
  * 
  *resources
@@ -16,7 +15,7 @@ const { match } = require("../util/path");
 ////------------------------------------This APIs For Search----------------------------
 exports.searchDonor = async(req, res) => {
     queryObj = {};
-
+    const { page = 1, limit = 10 } = req.query;
     if (bloodEnum[req.query.bg]) {
         queryObj.bloodGroup = bloodEnum[req.query.bg];
     }
@@ -35,16 +34,17 @@ exports.searchDonor = async(req, res) => {
     }
 
     if (req.query.DistrictCode) {
-        console.log(req.query.DistrictCode)
+        console.log(req.query.DistrictCode);
         const queryDistricts = await districts
             .find({ DistrictCode: req.query.DistrictCode })
             .limit(1);
-        console.log(queryDistricts)
-        if (queryDistricts.length > 0)
-            queryObj.district = queryDistricts[0]._id;
+        console.log(queryDistricts);
+        if (queryDistricts.length > 0) queryObj.district = queryDistricts[0]._id;
     }
 
     const searchedUsers = await Userdb.find()
+        .limit(limit * 1)
+        .skip((page - 1) * limit)
         .and([
             queryObj,
             {
@@ -71,28 +71,29 @@ exports.searchDonor = async(req, res) => {
 
 exports.searchAmbulance = async(req, res) => {
     queryObj = {};
+    const { page = 1, limit = 10 } = req.query;
+
     if (req.query.DivisionCode) {
         const division = await divisions
             .find({ DivisionCode: parseInt(req.query.DivisionCode) })
             .limit(1);
 
-        if (division.length > 0)
-            queryObj.division = division[0]._id;
+        if (division.length > 0) queryObj.division = division[0]._id;
     }
 
     if (req.query.DistrictCode) {
-        console.log(req.query.DistrictCode)
+        console.log(req.query.DistrictCode);
         const queryDistricts = await districts
             .find({ DistrictCode: req.query.DistrictCode })
             .limit(1);
-        console.log(queryDistricts)
-        if (queryDistricts.length > 0)
-            queryObj.district = queryDistricts[0]._id;
+        console.log(queryDistricts);
+        if (queryDistricts.length > 0) queryObj.district = queryDistricts[0]._id;
     }
-
 
     const searchedAmbulances = await ambulances
         .find()
+        .limit(limit * 1)
+        .skip((page - 1) * limit)
         .and([
             queryObj,
             {
@@ -117,31 +118,30 @@ exports.searchAmbulance = async(req, res) => {
     res.send(searchedAmbulances);
 };
 
-
 exports.searchCylinder = async(req, res) => {
     queryObj = {};
+    const { page = 1, limit = 10 } = req.query;
     if (req.query.DivisionCode) {
         const division = await divisions
             .find({ DivisionCode: parseInt(req.query.DivisionCode) })
             .limit(1);
 
-        if (division.length > 0)
-            queryObj.division = division[0]._id;
+        if (division.length > 0) queryObj.division = division[0]._id;
     }
 
     if (req.query.DistrictCode) {
-        console.log(req.query.DistrictCode)
+        console.log(req.query.DistrictCode);
         const queryDistricts = await districts
             .find({ DistrictCode: req.query.DistrictCode })
             .limit(1);
-        console.log(queryDistricts)
-        if (queryDistricts.length > 0)
-            queryObj.district = queryDistricts[0]._id;
+        console.log(queryDistricts);
+        if (queryDistricts.length > 0) queryObj.district = queryDistricts[0]._id;
     }
-
 
     const searchedCylinders = await cylinders
         .find()
+        .limit(limit * 1)
+        .skip((page - 1) * limit)
         .and([
             queryObj,
             {

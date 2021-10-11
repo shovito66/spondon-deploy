@@ -1,12 +1,18 @@
-var { ambulances, ambulanceSchema, validateAmbulance } = require("../model/ambulance")
+var {
+    ambulances,
+    ambulanceSchema,
+    validateAmbulance,
+} = require("../model/ambulance");
 const { match } = require("../util/path");
 const Joi = require("joi");
 
-
-
 exports.getAllAmbulances = async(req, res) => {
     // console.log(req.header("x-auth-token"));
-    const allAmbulances = await ambulances.find({})
+    const { page = 1, limit = 10 } = req.query;
+    const allAmbulances = await ambulances
+        .find({})
+        .limit(limit * 1)
+        .skip((page - 1) * limit)
         .populate({
             path: "district division upazilla",
             // select: 'District Division -_id',
@@ -19,14 +25,15 @@ exports.getAllAmbulances = async(req, res) => {
     res.send(allAmbulances);
 };
 
-
 exports.createAmbulance = async(req, res) => {
-
     console.log(req.body);
     const { error } = validateAmbulance(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    const ambulance = await ambulances.find({ organizationName: req.body.organizationName, contactNo: req.body.contactNo }); //this AND Query
+    const ambulance = await ambulances.find({
+        organizationName: req.body.organizationName,
+        contactNo: req.body.contactNo,
+    }); //this AND Query
 
     if (ambulance.length > 0)
         return res
@@ -34,7 +41,6 @@ exports.createAmbulance = async(req, res) => {
             .send(
                 "Already have an ambulance with this name and contact number. Please try with another name or update/delete the existing one"
             );
-
 
     const newAmbulance = new ambulances({
         organizationName: req.body.organizationName,
@@ -45,9 +51,8 @@ exports.createAmbulance = async(req, res) => {
         upazilla: req.body.upazilla,
     });
     await newAmbulance.save();
-    return res.status(200).send(newAmbulance)
+    return res.status(200).send(newAmbulance);
 };
-
 
 exports.getAambulance = async(req, res) => {
     try {
@@ -61,8 +66,6 @@ exports.getAambulance = async(req, res) => {
         res.status(500).send(error.message);
     }
 };
-
-
 
 exports.deleteAmbulance = async(req, res) => {
     try {
@@ -83,7 +86,6 @@ exports.deleteAllAmbulances = async(req, res) => {
         return res.status(404).send("No ambulance was found to be deleted");
     res.send("Successfully Deleted All Ambulances");
 };
-
 
 exports.updateAmbulance = async(req, res) => {
     const { error } = validateAmbulance(req.body);

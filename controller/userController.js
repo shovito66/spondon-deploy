@@ -1,5 +1,5 @@
 var { Userdb, validateUser, userSchema } = require("../model/user");
-const Token = require("../model/token")
+const Token = require("../model/token");
 const sendEmail = require("../util/email");
 const { match } = require("../util/path");
 const Joi = require("joi");
@@ -9,20 +9,28 @@ var crypto = require("crypto");
 const SendmailTransport = require("nodemailer/lib/sendmail-transport");
 
 exports.getAllUser = async(req, res) => {
-    console.log();
-    const allUsers = await Userdb.find({})
-        .populate({
-            path: "district division upazilla",
-            // select: 'District Division -_id',
-        })
-        .sort({
-            //1 is used for ascending order while -1 is used for descending order.
-            currentStatus: -1, //
-            bloodGroup: 1,
-            division: 1,
-            firstName: -1,
-        });
-    res.header("x-auth-token", req.header("x-auth-token")).send(allUsers);
+    try {
+        const { page = 1, limit = 10 } = req.query;
+
+        const allUsers = await Userdb.find({})
+            .limit(limit * 1)
+            .skip((page - 1) * limit)
+            .populate({
+                path: "district division upazilla",
+                // select: 'District Division -_id',
+            })
+            .sort({
+                //1 is used for ascending order while -1 is used for descending order.
+                currentStatus: -1, //
+                bloodGroup: 1,
+                division: 1,
+                firstName: -1,
+            });
+        res.header("x-auth-token", req.header("x-auth-token")).send(allUsers);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
 };
 
 exports.createUser = async(req, res) => {
@@ -173,7 +181,6 @@ exports.deleteAllNonAdminUser = async(req, res) => {
 };
 
 exports.forgotPassword = async(req, res) => {
-
     try {
         // const schema = Joi.object({ email: Joi.string().email().required() });
         // const { error } = schema.validate(req.body.email);
@@ -181,22 +188,21 @@ exports.forgotPassword = async(req, res) => {
 
         const user = await Userdb.findOne().and([
             { $or: [{ email: req.body.email }, { mobile1: req.body.mobile1 }] },
-        ])
+        ]);
         if (!user)
             return res.status(400).send("user with given email doesn't exist");
 
         let token = await Token.findOne({ userId: user._id });
 
-
         if (!token) {
             let OTP = Math.floor(1000 + Math.random() * 9000).toString();
-            console.log(OTP)
-                // const hashedOTP = crypto
-                //     .createHash("sha256")
-                //     .update(OTP)
-                //     .digest("hex");
-                // console.log(hashedOTP)
-            console.log(user)
+            console.log(OTP);
+            // const hashedOTP = crypto
+            //     .createHash("sha256")
+            //     .update(OTP)
+            //     .digest("hex");
+            // console.log(hashedOTP)
+            console.log(user);
             token = await new Token({
                 userId: user._id,
                 token: OTP,
@@ -222,7 +228,7 @@ exports.resetPassword = async(req, res) => {
         const token = await Token.findOne({
             userId: user._id,
             // token: req.params.token,
-            token: req.body.token
+            token: req.body.token,
         });
         if (!token) return res.status(400).send("Invalid link or expired"); //Token Not Found
 

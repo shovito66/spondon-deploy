@@ -8,8 +8,11 @@ const Joi = require("joi");
 
 exports.getAllCylinders = async(req, res) => {
     // console.log(req.header("x-auth-token"));
+    const { page = 1, limit = 10 } = req.query;
     const allCylinders = await cylinders
         .find({})
+        .limit(limit * 1)
+        .skip((page - 1) * limit)
         .populate({
             path: "district division upazilla",
             // select: 'District Division -_id',

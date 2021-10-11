@@ -16,14 +16,14 @@ const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true,
-        minlength: 5,
+        minlength: 1,
         maxlength: 50,
         uppercase: true,
     },
     lastName: {
         type: String,
         required: true,
-        minlength: 5,
+        minlength: 1,
         maxlength: 50,
         uppercase: true,
     },
@@ -31,8 +31,8 @@ const userSchema = new mongoose.Schema({
         type: String,
 
         required: true,
-        minlength: 5,
-        maxlength: 255,
+        minlength: 3,
+        maxlength: 15,
         unique: [true, "Email FOUND!!!"],
         lowercase: true,
     },
@@ -109,47 +109,6 @@ const userSchema = new mongoose.Schema({
             }
             return false;
         },
-        /**
-                             * get: function() {
-                                let date = new Date(this.DOB);
-                                console.log(this.DOB);
-                                let today = new Date();
-                                console.log(today);
-                                let timeDiff = today.getTime() - date.getTime();
-                                let days = Math.floor(timeDiff / (1000 * 3600 * 24));
-                                console.log("days--->");
-                                console.log(days);
-                                let flag = false;
-                                if (days > 56) {
-                                    console.log("I CAN DONATE BLOOD AGAIN");
-                                    flag = true;
-                                } else {
-                                    flag = false;
-                                }
-                                return flag;
-                            },
-                            set: function() {
-                                let date = new Date(this.DOB);
-                                console.log(this.DOB);
-                                let today = new Date();
-                                console.log(today);
-                                let timeDiff = today.getTime() - date.getTime();
-                                let days = Math.floor(timeDiff / (1000 * 3600 * 24));
-                                console.log("days--->");
-                                console.log(days);
-                                let flag = false;
-                                if (days > 56) {
-                                    console.log("I CAN DONATE BLOOD AGAIN");
-                                    flag = true;
-                                } else {
-                                    flag = false;
-                                }
-                                return flag;
-                            }
-
-                            // alias: 'age',
-
-                             */
     },
 
     bloodGroup: {
@@ -264,10 +223,10 @@ function validateUser(user) {
      */
 
     const schema = Joi.object({
-        firstName: Joi.string().min(5).max(50).required(),
-        lastName: Joi.string().min(5).max(50).required(),
-        email: Joi.string().min(5).max(255).required().email(),
-        password: Joi.string().min(5).max(255),
+        firstName: Joi.string().min(1).max(50).required(),
+        lastName: Joi.string().min(1).max(50).required(),
+        email: Joi.string().min(3).max(15).required().email(),
+        password: Joi.string().min(5).max(50),
         isAdmin: Joi.boolean(),
         gender: Joi.any().valid(...genderEnum), //Don't accept array
         bloodGroup: Joi.any().valid(...bloodEnum),
