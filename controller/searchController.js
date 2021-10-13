@@ -73,9 +73,8 @@ exports.searchAmbulance = async(req, res) => {
     queryObj = {};
     const { page = 1, limit = 10 } = req.query;
 
-    console.log(req.query.DivisionCode)
+    // console.log(req.query.DivisionCode);
     if (req.query.DivisionCode) {
-
         const division = await divisions
             .find({ DivisionCode: parseInt(req.query.DivisionCode) })
             .limit(1);
@@ -116,8 +115,16 @@ exports.searchAmbulance = async(req, res) => {
             organizationName: 1,
         });
 
-    // res.send(req.query.name)
-    res.send(searchedAmbulances);
+    totalResultCount = await ambulances.find().and([
+        queryObj,
+        {
+            $or: [
+                { organizationName: new RegExp(req.query.text, "i") },
+                { remarks: new RegExp(req.query.text, "i") },
+            ],
+        },
+    ]);
+    res.header("total-count", totalResultCount.length).send(searchedAmbulances);
 };
 
 exports.searchCylinder = async(req, res) => {
@@ -164,5 +171,15 @@ exports.searchCylinder = async(req, res) => {
             organizationName: 1,
         });
 
-    res.send(searchedCylinders);
+    totalResultCount = await cylinders.find().and([
+        queryObj,
+        {
+            $or: [
+                { organizationName: new RegExp(req.query.text, "i") },
+                { remarks: new RegExp(req.query.text, "i") },
+            ],
+        },
+    ]);
+
+    res.header("total-count", totalResultCount.length).send(searchedCylinders);
 };
