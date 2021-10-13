@@ -226,7 +226,7 @@ function validateUser(user) {
         firstName: Joi.string().min(1).max(50).required(),
         lastName: Joi.string().min(1).max(50).required(),
         email: Joi.string().min(3).required().email(),
-        password: Joi.string().min(5).max(50),
+        password: Joi.string().min(5),
         isAdmin: Joi.boolean(),
         gender: Joi.any().valid(...genderEnum), //Don't accept array
         bloodGroup: Joi.any().valid(...bloodEnum),
