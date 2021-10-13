@@ -128,14 +128,14 @@ exports.updateUser = async(req, res) => {
         }
         flag = true;
     }
-    const salt = await bcrypt.genSalt(10);
-    hashedPassword = await bcrypt.hash(req.body.password, salt);
+    // const salt = await bcrypt.genSalt(10);
+    // hashedPassword = await bcrypt.hash(req.body.password, salt);
     const updatedUser = await Userdb.findByIdAndUpdate(
         req.params.id, {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
 
-            password: hashedPassword,
+            password: req.body.password,
             gender: req.body.gender,
             DOB: req.body.DOB,
             lastDonationDate: req.body.lastDonationDate,
