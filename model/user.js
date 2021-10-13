@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
 
         required: true,
         minlength: 3,
-        maxlength: 15,
+        // maxlength: 15,
         unique: [true, "Email FOUND!!!"],
         lowercase: true,
     },
@@ -225,7 +225,7 @@ function validateUser(user) {
     const schema = Joi.object({
         firstName: Joi.string().min(1).max(50).required(),
         lastName: Joi.string().min(1).max(50).required(),
-        email: Joi.string().min(3).max(15).required().email(),
+        email: Joi.string().min(3).required().email(),
         password: Joi.string().min(5).max(50),
         isAdmin: Joi.boolean(),
         gender: Joi.any().valid(...genderEnum), //Don't accept array
