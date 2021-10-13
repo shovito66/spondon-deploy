@@ -73,7 +73,9 @@ exports.searchAmbulance = async(req, res) => {
     queryObj = {};
     const { page = 1, limit = 10 } = req.query;
 
+    console.log(req.query.DivisionCode)
     if (req.query.DivisionCode) {
+
         const division = await divisions
             .find({ DivisionCode: parseInt(req.query.DivisionCode) })
             .limit(1);
