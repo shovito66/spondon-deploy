@@ -35,8 +35,10 @@
     "mongoose-float": "^1.0.4",
     "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.10.0",
+    "multer": "^1.4.3",
     "nodemailer": "^6.6.5",
     "nodemon": "^2.0.12",
-    "solc": "^0.4.25"
+    "solc": "^0.4.25",
+    "ss": "0.0.1"
   }
 }

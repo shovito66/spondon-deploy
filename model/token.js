@@ -8,7 +8,8 @@ const tokenSchema = new mongoose.Schema({
         required: true,
     },
     token: { type: String, required: true },
-    expireAt: { type: Date, default: Date.now, index: { expires: '5m' } },
+    // expireAt: { type: Date, default: Date.now, index: { expires: '5m' } },
+    expireAt: { type: Date, default: Date.now, index: { expires: 300 } },
 });
 
 const Token = mongoose.model("token", tokenSchema);

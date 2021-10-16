@@ -210,12 +210,21 @@ exports.forgotPassword = async(req, res) => {
         }
 
         // const link = `${process.env.BASE_URL}/reset/${user._id}/${token.token}`;
-        const otpMsg = `Your OTP is: ${token.token} \n\nregards\nShovito B. Soumma`;
+        const otpMsg = `You have requested for new password.\nEnter the OTP in your mobile.Your OTP will be valid for 5 minutes.\nOTP: ${token.token} \n\nregards\n-Shovito B. Soumma`;
 
-        await sendEmail(user.email, "Password reset", otpMsg);
-        res.send("password reset link sent to your email account");
+        await sendEmail(user.email, "Reset Password", otpMsg);
+        // res.send("password reset link sent to your email account");
+        const message = "OTP has been sent to your email:" + user.email;
+        res.send({
+            message: message,
+            email: user.email,
+        });
     } catch (error) {
-        res.send("An error occurred");
+        res.status(404).send({
+            message: "An error occurred.",
+            email: user.email,
+            status: false,
+        });
         console.log(error);
     }
 };
@@ -237,11 +246,21 @@ exports.resetPassword = async(req, res) => {
         await user.save();
         await token.delete();
 
-        const msg = `password reset successfully. - \n\n-Shovito B. Soumma`;
+        const msg = `Your password has been reset successfully. - \n\nregards\n-Shovito B. Soumma`;
         await sendEmail(user.email, "Password Updated", msg);
-        res.send("password reset successfully.");
+        // res.send("password reset successfully.");
+        res.send({
+            message: "Password has been reset successfully.",
+            email: user.email,
+            status: true,
+        });
+
     } catch (error) {
-        res.send("An error occurred");
+        res.status(404).send({
+            message: "An error occurred.",
+            email: user.email,
+            status: false,
+        });
         console.log(error);
     }
 };

@@ -50,10 +50,11 @@ $ nodemon
 
 ### API
 
-Test the API from postman using http://localhost:3000/api/ at your browser
+Test the API from postman using https://absb.herokuapp.com/api/ at your browser
 
 - [API Documentation](https://docs.google.com/spreadsheets/d/1II2hOKT4fJeMtNjqb7sovW1jMt4Ri57Ehf9XuuGPmJw/edit#gid=1481506332) [Restricted]
 
 
 ## Authentication Token
 JWT Token is under the `x-auth-token` variable of the `req.header` section
+
