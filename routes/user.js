@@ -24,7 +24,7 @@ router.delete('/', authController.restrictForAdmin, userController.deleteAllNonA
 
 // http://localhost:3000/api/user/forgot
 router.post('/forgot', userController.forgotPassword);
-router.post('/verify-otp/:userId', userController.resetPassword); //// http://localhost:3000/api/user/verify-otp/:userId
+router.post('/verify-otp', userController.resetPassword); //// http://localhost:3000/api/user/verify-otp/:userId
 
 
 

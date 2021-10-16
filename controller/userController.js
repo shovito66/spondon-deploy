@@ -231,8 +231,11 @@ exports.forgotPassword = async(req, res) => {
 
 exports.resetPassword = async(req, res) => {
     try {
-        const user = await Userdb.findById(req.params.userId);
-        if (!user) return res.status(400).send("invalid link or expired"); //User Not Found
+        // const user = await Userdb.findById(req.params.userId);
+        const users = await Userdb.find({ email: req.body.email });
+        const user = users[0]
+            // console.log(user)
+        if (!user) return res.status(400).send("invalid OPT or time has expired"); //User Not Found
 
         const token = await Token.findOne({
             userId: user._id,
