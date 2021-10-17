@@ -79,7 +79,10 @@ exports.createUser = async(req, res) => {
 
         currentStatus: req.body.currentStatus,
     });
-    await newUser.save();
+    const createdUser = await newUser.save();
+    const msg = `Hi ` + createdUser.firstName + ` ` + createdUser.lastName + `,\nABSB Spondon extends a warm welcome for signing up to our service. Please contact us at shovito@absbpeople.com with any questions.\n\nregards\n - Shovito B.Soumma `;
+    await sendEmail(createdUser.email, "Welcome", msg);
+
     const token = jwt.sign({ _id: newUser._id, DOB: newUser.DOB },
         process.env.JWT_PRIVATE_KEY, { expiresIn: "2d" }
     );
